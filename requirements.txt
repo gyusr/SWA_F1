@@ -1,0 +1,24 @@
+fastapi==0.111.1
+pydantic-extra-types
+SQLAlchemy==2.0.32
+mysql-connector-python==9.0.0
+python-dotenv==1.0.1
+python-multipart==0.0.9
+pymysql==1.1.1
+aiomysql==0.2.0
+cryptography 
+aiofiles==24.1.0
+bcrypt==4.0.1
+passlib[bcrypt]==1.7.4
+itsdangerous==2.2.0
+
+google-generativeai
+httpx
+newspaper3k
+lxml[html_clean]
+# pip install -q -U google-genai
+
+celery==5.4.0
+redis==5.0.7
+sentence-transformers==3.0.1
+gevent

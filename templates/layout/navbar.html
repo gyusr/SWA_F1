@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/meetings/read/all">
+            <strong>회의록 요약 및 뉴스 추천 시스템</strong>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                {% if session_user %}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/meetings/create">새 회의록 분석</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page">{{ session_user.name }}님</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/user/logout">로그아웃</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/user/login">로그인</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

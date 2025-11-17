@@ -1,0 +1,7 @@
+sudo service redis-server start
+redis-cli ping
+
+celery -A celery_worker.celery_app purge
+celery -A celery_worker.celery_app worker --loglevel=info
+
+uvicorn main:app --reload

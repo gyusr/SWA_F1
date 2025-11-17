@@ -1,0 +1,127 @@
+{% extends "/layout/main_layout.html" %}
+
+{% block title %}회의록 상세 - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a href="/meetings/read/all" class="btn btn-outline-secondary btn-sm mb-2">
+                &larr; 목록으로 돌아가기
+            </a>
+            <h2 class="mb-0">{{ meeting.title }}</h2>
+            <p class="text-muted">
+                (ID: {{ meeting.id }}) - 생성: {{ meeting.created_dt.strftime('%Y-%m-%d %H:%M') }}
+            </p>
+        </div>
+
+        <div>
+            <form action="/meetings/delete/{{ meeting.id }}?_method=DELETE" 
+                  method="POST" 
+                  onsubmit="return confirm('정말로 이 회의록을 삭제하시겠습니까? \n이 작업은 되돌릴 수 없습니다.');">
+                <button type="submit" class="btn btn-danger btn-sm">회의록 삭제</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5>회의록 요약 (LLM)</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ meeting.original_meeting | replace('\n', '<br>') | safe }}</p>
+                    <hr>
+                    <div class="accordion" id="accordionMeeting">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    회의록 요약 펼쳐보기
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionMeeting">
+                                <div class="accordion-body" style="white-space: pre-wrap; word-wrap: break-word;">
+                                    {{ meeting.summary_meeting }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% if meeting.keywords %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    핵심 키워드 ({{ meeting.keywords | length }}개)
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionMeeting">
+                                <div class="accordion-body">
+                                    {% for keyword in meeting.keywords %}
+                                        <span class="badge bg-secondary m-1 fs-6">{{ keyword }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5>관련 추천 뉴스 (Top 5)</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="accordion" id="accordionNews">
+                        
+                        {% if meeting.news_items %}
+                            {% for item in meeting.news_items %}
+                                {% set item_index = loop.index0 %}
+                                
+                                {% if item and item.url %}
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingNews{{ item_index }}">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNews{{ item_index }}" aria-expanded="false" aria-controls="collapseNews{{ item_index }}">
+                                                <strong>#{{ loop.index }}: {{ (item.title or item.summary) | truncate(80) }}</strong>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseNews{{ item_index }}" class="accordion-collapse collapse" aria-labelledby="headingNews{{ item_index }}" data-bs-parent="#accordionNews">
+                                            <div class="accordion-body">
+                                                <p><strong>뉴스 요약본 (LLM):</strong></p>
+                                                <p class="mb-3">{{ item.summary }}</p>
+                                                
+                                                <p><strong>크롤링 원본 (일부):</strong></p>
+                                                <p class="mb-3 text-muted" style="font-size: 0.9em; max-height: 150px; overflow-y: auto;">
+                                                    {{ item.original | truncate(400) }}
+                                                </p>
+                                                
+                                                <a href="{{ item.url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                    뉴스 원문 보기 &rarr;
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        
+                        {% else %}
+                            <div class="p-4 text-center text-muted">
+                                <p>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    <strong>관련 뉴스를 분석 중입니다...</strong>
+                                </p>
+                                <p class="mb-0 small">페이지를 새로고침하여 진행 상황을 확인할 수 있습니다.</p>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

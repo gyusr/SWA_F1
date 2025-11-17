@@ -1,0 +1,34 @@
+// First Phase
+O1. DB 설계 (User / Meetings / News)
+O2. 회원가입 / 로그인, 로그아웃 (쿠키-세션)
+O3. 페이지별 접근 권한 설정
+
+// Second Phase
+O4. Core Logic 개발
+    - 기능 구현
+    - DB 저장
+
+_ Celery / Redis
+
+// Third Phase
+_. 예외 처리 (일단 어느정도 함 / 나중에 한 번 다시 확인 / 통일 - 정하기)
+_. _
+
+
+// V3
+- meetings_schemas.py 수정
+- read_meeting.html 수정
+- 
+
+
+
+pip install --upgrade pip setuptools wheel
+
+//
+이제 할 일
+> 뉴스를 정확히 어떻게 크롤링 하게 할 것이냐
+> 키워드 조합을 어떻게?
+> 프롬프트 엔지니어링? (요약 출력 시)
+> 회의록 자체 입력 유형 구분??
+
+> 버튼 분할 및 이런 건 일단 내버려두자...
