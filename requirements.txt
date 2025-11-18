@@ -22,3 +22,5 @@ celery==5.4.0
 redis==5.0.7
 sentence-transformers==3.0.1
 gevent
+
+# pip install --upgrade pip setuptools wheel

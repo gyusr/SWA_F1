@@ -115,9 +115,7 @@ async def delete_meeting(
     conn: Connection = Depends(context_get_conn),
     session_user = Depends(user_svc.get_session_user_prt)
 ): 
-    # 회의록 삭제 로직
-    # (TODO: 삭제 로직을 services/meetings_svc.py에 구현해야 함)
-    # await meetings_svc.delete_meeting_by_id(conn=conn, id=id, session_user=session_user)
+    await meetings_svc.delete_meeting_by_id(conn=conn, id=id)
 
     return RedirectResponse(
         url="/meetings/read/all", # [수정] /meetings -> /meetings/read/all

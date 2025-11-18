@@ -16,8 +16,6 @@ CREATE TABLE User (
 
 select * from user;
 
-drop table meetings;
-
 CREATE TABLE Meetings (
     -- 회의록 고유 ID (Primary Key)
     id BIGINT AUTO_INCREMENT PRIMARY KEY,

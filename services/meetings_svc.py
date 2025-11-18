@@ -223,6 +223,30 @@ async def get_by_id_meeting(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e)
         )
+    
+async def delete_meeting_by_id(
+    conn: Connection,
+    id: int
+):
+    try:
+        query = '''
+        delete from meetings where id = :id
+        '''
+
+        await conn.execute(
+            text(query),
+            {
+                "id": id
+            }
+        )
+        await conn.commit()
+
+    except SQLAlchemyError as e:
+        print(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
 
 # [신규] 재시도를 위해 news_items를 NULL로 비우는 함수
 async def clear_news_items_by_id(
